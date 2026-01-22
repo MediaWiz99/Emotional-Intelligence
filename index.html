@@ -987,21 +987,29 @@
             const lowestDim = sortedDimensions[sortedDimensions.length - 1][0];
 
             // Determine EQ level
-            let eqLevel, eqInterpretation;
+            let eqLevel, eqInterpretation, levelAbbrev;
             const eqPercent = (totalEQ / maxTotal) * 100;
             if (eqPercent >= 80) {
                 eqLevel = "High Emotional Intelligence";
+                levelAbbrev = 'H';
                 eqInterpretation = "You demonstrate strong emotional intelligence across multiple dimensions. You likely excel at understanding yourself and others, managing emotions effectively, and building strong relationships. Continue leveraging these strengths while remaining open to growth.";
             } else if (eqPercent >= 60) {
                 eqLevel = "Above Average Emotional Intelligence";
+                levelAbbrev = 'M';
                 eqInterpretation = "You show solid emotional intelligence with clear areas of strength. You have a good foundation for understanding and managing emotions. Focus on developing your lower-scoring areas to become a more well-rounded leader.";
             } else if (eqPercent >= 40) {
                 eqLevel = "Moderate Emotional Intelligence";
+                levelAbbrev = 'D';
                 eqInterpretation = "You have developing emotional intelligence with room for significant growth. The good news: EQ can be improved with intentional practice. Focus on your lowest dimensions and use the development strategies provided.";
             } else {
                 eqLevel = "Developing Emotional Intelligence";
+                levelAbbrev = 'B';
                 eqInterpretation = "Your results suggest opportunities for substantial growth in emotional intelligence. Remember that EQ is learnable—with focused effort, you can significantly improve. Start with one dimension and build from there.";
             }
+            
+            // Generate tracker code
+            const dimAbbrev = { selfAwareness: 'SA', selfRegulation: 'SR', motivation: 'Mo', empathy: 'Em', socialSkills: 'SS' };
+            const trackerCode = 'EIA-' + dimAbbrev[highestDim] + '-' + levelAbbrev + totalEQ;
 
             function getScoreLevel(score) {
                 if (score >= 40) return { level: 'High', class: 'high' };
@@ -1056,6 +1064,37 @@
                         <h3>Social Skills</h3>
                         <div class="score">${scores.socialSkills}</div>
                         <div class="max">of ${maxDimension}</div>
+                    </div>
+                </div>
+
+                <!-- TRACKER SUMMARY SECTION -->
+                <div style="background: linear-gradient(135deg, #1a3a7a 0%, #00205B 100%); color: white; padding: 25px; border-radius: 14px; margin: 20px 0;">
+                    <h3 style="color: #C4A000; margin-bottom: 15px; font-size: 1.3em;">📋 Assessment Tracker Summary</h3>
+                    <p style="font-size: 0.9em; opacity: 0.9; margin-bottom: 15px;">Copy this code into your Assessment Tracker.</p>
+                    
+                    <div style="background: rgba(255,255,255,0.1); padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div>
+                                <div style="font-size: 0.8em; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Strongest Dimension</div>
+                                <div style="font-size: 1.4em; font-weight: 700; color: #F5E6A3;">${dimensionData[highestDim].name}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8em; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Growth Area</div>
+                                <div style="font-size: 1.4em; font-weight: 700; color: #F5E6A3;">${dimensionData[lowestDim].name}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8em; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">EQ Level</div>
+                                <div style="font-size: 1.2em; font-weight: 600;">${eqLevel}</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 0.8em; opacity: 0.8; text-transform: uppercase; letter-spacing: 1px;">Total Score</div>
+                                <div style="font-size: 1.2em; font-weight: 600;">${totalEQ} / ${maxTotal} (${Math.round(eqPercent)}%)</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 15px; padding: 12px; background: rgba(196, 160, 0, 0.3); border-radius: 8px; font-family: monospace; font-size: 1.1em; text-align: center;">
+                        <span style="opacity: 0.7;">Tracker Code:</span> <strong style="color: #F5E6A3; font-size: 1.2em;">${trackerCode}</strong>
                     </div>
                 </div>
 
